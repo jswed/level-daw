@@ -10,7 +10,6 @@ angular.module('levelDaw', [])
   .controller('mainController', function($scope, $document) {
     var frameId,
         startTime,
-        trackName = 'track1',
         animationFrame = new AnimationFrame(30),
         keyboard = new Keyboard(),
         atx;
@@ -101,15 +100,13 @@ angular.module('levelDaw', [])
           //play it
           playhook.write({
             timestamp: current,
-            note: key,
-            trackName: trackName
+            note: key
           });
           //rec it
           if($scope.isPlaying){
             socket.emit('writeNote', {
             timestamp: current,
-            note: key,
-            trackName: trackName
+            note: key
           });
           }
         }

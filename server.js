@@ -42,8 +42,7 @@ var io = require('socket.io')(server);
 
 io.on('connection', function(socket){
   socket.on('writeNote', function(data){
-    var key = util.format("%s:%s", data.timestamp, data.trackName);
-    db.put(key, data);
+    db.put(data.timestamp, data);
   });
   socket.on('readRange', function(data){
     data = data || {};
