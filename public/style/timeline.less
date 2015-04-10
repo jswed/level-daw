@@ -1,0 +1,34 @@
+div[timeline]{
+  position: relative;
+  width: 100%;
+  height: 30px;
+  background-color: lighten(grey, 20%);
+  .bar{
+    position: relative;
+    display: inline-block;
+    height: 100%;
+    &::after{
+      content: "";
+      display: inline-block;
+      float: right;
+      width: 1px;
+      height: 100%;
+      background-color: black;
+    }
+    &:first-child::before{
+      content: "";
+      display: inline-block;
+      float: left;
+      width: 1px;
+      height: 100%;
+      background-color: black;
+    }
+  }
+  .play-cursor{
+    position: absolute;
+    display: inline-block;
+    width: 1px;
+    height: 100%;
+    background-color: red;
+  }
+}

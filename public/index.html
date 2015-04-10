@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> Level DAW </title>
+    <link rel="stylesheet" href="style/main.css">
+  </head>
+  <body ng-app="levelDaw">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bundle.js"></script>
+    <div ng-controller="mainController">
+      <table class="main-container">
+        <tr>
+          <td></td>
+          <td>
+            <div timeline></div>
+          </td>
+        </tr>
+        <tr ng-repeat="t in tracks">
+          <td>{{t.name}}</td>
+          <td>
+            <div track="t"></div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>
