@@ -4,6 +4,7 @@ var http = require('http');
 var path = require('path');
 var util = require('util');
 var through = require('through2');
+var when = require('when');
 
 //leveldb
 var db = require('levelup')('./db', {
@@ -33,6 +34,29 @@ app.use(koaLess(path.join(__dirname, 'public')));
 
 //static
 app.use(koaStatic(path.join(__dirname, 'public')));
+
+//query
+app.use(route.get('/api/all', function *(){
+  this.type = 'json';
+  this.body =  yield when.promise(function(resolve){
+    var result = [];
+    db.createKeyStream().on('data', function(data){
+      result.push(data);
+    }).on('end', function(){
+      resolve(result);
+    });
+  });
+}));
+app.use(route.get('/api/clean', function *(){
+  yield when.promise(function(resolve){
+    db.createKeyStream().on('data', function(key){
+      db.del(key);
+    }).on('end', function(){
+      resolve();
+    });
+  });
+  this.status = 200;
+}));
 
 //http server
 var server = http.createServer(app.callback());
