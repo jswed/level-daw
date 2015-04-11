@@ -1,3 +1,4 @@
+var when = require('when');
 var angular = require('angular');
 var AnimationFrame = require('animation-frame');
 
@@ -8,6 +9,7 @@ module.exports = function(){
       var animationFrame = scope.animationFrame;
       var cursor = angular.element("<span></span>").addClass("play-cursor");
       var previous;
+      var noteDoms = {};
       element.append(cursor);
 
       animationFrame.request(updateCursor);
@@ -33,11 +35,38 @@ module.exports = function(){
           }
         }
       });
+
       element.on('click', function(e){
         scope.$apply(function(){
           scope.current = (e.pageX - element.offset().left) / element.width() * scope.total;
         });
       });
+
+      scope.sheet.on('data', function(note){
+        if(!note){
+          //clean all
+          element.find('.note').remove();
+          noteDoms = {};
+        } else {
+          var noteDom = noteDoms[note.timestamp] || createNewNode(note);
+          if(noteDom.note !== note.note){
+            var grey = Math.floor(note.note / 880 * 255);
+            noteDom.note = note.note;
+            noteDom.css({
+              'transform': 'translateY(' + ((1-Math.log2(note.note/440))*element.height()) + 'px)'
+            });
+          }
+        }
+      });
+
+      function createNewNode(note){
+        var dom = $('<div></div>').addClass('note').css({
+          left: (element.width() * note.timestamp / scope.total) + 'px'
+        });
+        element.append(dom);
+        noteDoms[note.timestamp] = dom;
+        return dom;
+      }
     }
   };
 };

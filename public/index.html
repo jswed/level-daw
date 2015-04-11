@@ -8,20 +8,11 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/bundle.js"></script>
     <div ng-controller="mainController">
-      <table class="main-container">
-        <tr>
-          <td></td>
-          <td>
-            <div timeline></div>
-          </td>
-        </tr>
-        <tr ng-repeat="t in tracks">
-          <td>{{t.name}}</td>
-          <td>
-            <div track="t"></div>
-          </td>
-        </tr>
-      </table>
+      <div class="panel">
+        <button id="clean" ng-click="cleanAll()">Clean</button>
+        <p>Try these keys: space, awsedrfgyhujik</p>
+      </div>
+      <div timeline></div>
     </div>
   </body>
 </html>

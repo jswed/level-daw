@@ -33,4 +33,5 @@ Keyboard.prototype.note = function(idx){
   return this.octave * 440 * factors[idx];
 };
 
+
 module.exports = Keyboard;

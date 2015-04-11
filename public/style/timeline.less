@@ -1,7 +1,9 @@
+@bar-height: 130px;
+@note-height: @bar-height / 13;
 div[timeline]{
   position: relative;
   width: 100%;
-  height: 30px;
+  height: @bar-height;
   background-color: lighten(grey, 20%);
   .bar{
     position: relative;
@@ -30,5 +32,12 @@ div[timeline]{
     width: 1px;
     height: 100%;
     background-color: red;
+  }
+  .note{
+    position: absolute;
+    top: -(@note-height/2);
+    width: 15px;
+    height: @note-height;
+    background-color: green;
   }
 }

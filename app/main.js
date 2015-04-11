@@ -7,7 +7,7 @@ var Keyboard = require('./keyboard');
 var Hooklock = require('hooklock');
 
 angular.module('levelDaw', [])
-  .controller('mainController', function($scope, $document) {
+  .controller('mainController', function($scope, $document, $http) {
     var frameId,
         startTime,
         animationFrame = new AnimationFrame(30),
@@ -18,7 +18,6 @@ angular.module('levelDaw', [])
     $scope.audioCtx = atx = new AudioContext();
 
     $scope.engine = (function(){
-      // TEMP: a dirty quickhack
       var osc = atx.createOscillator();
       var gain = atx.createGain();
       var length = 0.2;
@@ -41,7 +40,26 @@ angular.module('levelDaw', [])
     $scope.planned = 0;
     $scope.stepLength = 0.1;
     $scope.isPlaying = false;
+    $scope.sheet = through.obj(function(data, enc, next){
+      var that = this;
+      if(data instanceof Array){
+        data.forEach(function(note){
+          that.push(note);
+        });
+      } else {
+        that.push(data);
+      }
+      next();
+    });
+    $scope.cleanAll = function(){
+      $scope.sheet.write(false);
+      $http.get('/api/clean');
+    };
 
+    $http.get('/api/all').success(function(notes){
+      $scope.sheet.write(notes);
+    });
+    
     var hookOptions = {
       clock: function(){
         return atx.currentTime;
@@ -105,9 +123,13 @@ angular.module('levelDaw', [])
           //rec it
           if($scope.isPlaying){
             socket.emit('writeNote', {
-            timestamp: current,
-            note: key
-          });
+              timestamp: current,
+              note: key
+            });
+            $scope.sheet.write({
+              timestamp: current,
+              note: key
+            });
           }
         }
       }
