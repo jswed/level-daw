@@ -40,7 +40,7 @@ app.use(route.get('/api/all', function *(){
   this.type = 'json';
   this.body =  yield when.promise(function(resolve){
     var result = [];
-    db.createKeyStream().on('data', function(data){
+    db.createValueStream().on('data', function(data){
       result.push(data);
     }).on('end', function(){
       resolve(result);
