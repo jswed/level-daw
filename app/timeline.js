@@ -1,4 +1,3 @@
-var when = require('when');
 var angular = require('angular');
 var AnimationFrame = require('animation-frame');
 
